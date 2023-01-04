@@ -1,9 +1,9 @@
 import "./styles.css";
-import { ProducDTO } from "../../models/product";
+import { ProductDTO } from "../../models/product";
 import ProductCategory from "../ProductCategory";
 
 type Props = {
-  product: ProducDTO;
+  product: ProductDTO;
 };
 
 export default function ProductDetailsCard({ product }: Props) {
