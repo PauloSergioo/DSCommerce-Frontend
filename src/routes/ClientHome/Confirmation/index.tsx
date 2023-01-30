@@ -6,12 +6,13 @@ import { OrderDTO } from "../../../models/order";
 import * as orderService from "../../../services/order-service";
 
 export default function Confirmation() {
+
   const params = useParams();
 
   const [order, setOrder] = useState<OrderDTO>();
 
   useEffect(() => {
-    orderService.findByIdRequest(Number(params.orderID)).then((response) => {
+    orderService.findByIdRequest(Number(params.orderId)).then((response) => {
       setOrder(response.data);
     });
   }, []);
