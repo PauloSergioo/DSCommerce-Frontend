@@ -12,7 +12,6 @@ type QueryParams = {
 };
 
 export default function Catalog() {
-  
   const [isLastPage, setIsLastPage] = useState(false);
 
   const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -50,12 +49,11 @@ export default function Catalog() {
             <CatalogCard key={product.id} product={product} />
           ))}
         </div>
-        {
-          !isLastPage &&
-          <div onClick={handleNextPageClick}>
-            <ButtonNextPage />
+        {!isLastPage && (
+          <div>
+            <ButtonNextPage onNextPage={handleNextPageClick} />
           </div>
-        }
+        )}
       </section>
     </main>
   );
