@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import FormInput from "../../../components/FormInput";
 import * as forms from "../../../utils/forms";
-import * as productService  from "../../../services/product-service";
+import * as productService from "../../../services/product-service";
 
 export default function ProductForm() {
-
   const params = useParams();
 
-  const isEditing = params.productId !== 'create';
+  const isEditing = params.productId !== "create";
 
   const [formData, setFormData] = useState<any>({
     name: {
@@ -25,6 +24,10 @@ export default function ProductForm() {
       name: "price",
       type: "number",
       placeholder: "Preço",
+      validation: function (value: any) {
+        return Number(value) > 0;
+      },
+      message: "Favor informar um valor positivo",
     },
     imgUrl: {
       value: "",
@@ -37,16 +40,17 @@ export default function ProductForm() {
 
   useEffect(() => {
     if (isEditing) {
-      productService.findById(Number(params.productId))
-      .then(response => {
-        const newFormData = forms.updateAll(formData, response.data)
+      productService.findById(Number(params.productId)).then((response) => {
+        const newFormData = forms.updateAll(formData, response.data);
         setFormData(newFormData);
-      })
+      });
     }
   }, []);
 
   function handleInputChange(event: any) {
-    setFormData(forms.update(formData, event.target.name, event.target.value));
+    const dataUpdate = forms.update(formData, event.target.name, event.target.value);
+    const dataValidated = forms.validate(dataUpdate, event.target.name);
+    setFormData(dataValidated);
   }
 
   return (
@@ -62,6 +66,7 @@ export default function ProductForm() {
                   className="dsc-form-control"
                   onChange={handleInputChange}
                 />
+                <div className="dsc-form-error">{formData.name.message}</div>
               </div>
               <div>
                 <FormInput
@@ -69,6 +74,7 @@ export default function ProductForm() {
                   className="dsc-form-control"
                   onChange={handleInputChange}
                 />
+                <div className="dsc-form-error">{formData.price.message}</div>
               </div>
               <div>
                 <FormInput
